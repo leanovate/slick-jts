@@ -11,6 +11,15 @@
     <body>
         <h1>slick-spatial Demo</h1>
 
+        <h2>find-by-coordinate</h2>
+        <form action="find-by-coordinates">
+            Lat: <input type="text" name="lat" />
+            Lng: <input type="text" name="lng" />
+            <button type="submit">Finde</button>
+        </form>
+        <p>Blücherstraße 22: 52.49439 13.39873</p>
+
+        <h2>Alle Bezirke</h2>
         <ul>
             @districts.map { district =>
                 <li>@district</li>

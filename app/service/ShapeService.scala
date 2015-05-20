@@ -7,13 +7,9 @@ import scala.concurrent.Future
 import play.api.Play.current
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class BoundingBox(neLat: Double, neLng: Double, swLat: Double, swLng: Double)
-
 trait ShapeService {
-
   def listAll(): Future[List[String]]
-
-  def findByCoordinate(lat: Double, lng: Double): Future[Option[String]]
+  def findByCoordinate(latLng: LatLng): Future[Option[String]]
   def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]]
 }
 
@@ -33,6 +29,10 @@ class DemoShapeService extends ShapeService {
       })
     }
 
-  def findByCoordinate(lat: Double, lng: Double): Future[Option[String]] = ???
+  def findByCoordinate(latLng: LatLng): Future[Option[String]] =
+    Future {
+      Some("Friedrichshain")
+    }
+
   def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]] = ???
 }

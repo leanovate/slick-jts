@@ -1,0 +1,16 @@
+@(latLng: service.LatLng, result: Option[String])
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>slick-spatial Demo</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    </head>
+
+    <body>
+        Die gesuchte Koordinate (@latLng.lat, @latLng.lng)
+        @result.fold(" wurde nicht gefunden")(district => " liegt in " + district)
+    </body>
+</html>

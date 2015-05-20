@@ -1,11 +1,13 @@
 package controllers
 
 import com.vividsolutions.jts.io.{ WKTReader, WKBWriter }
+import play.api.data._
+import play.api.data.Forms._
 import play.api.mvc._
 import play.api.db._
 
 import play.api.Play.current
-import service.DemoShapeService
+import service.{ LatLng, DemoShapeService }
 
 import scala.io.Source
 
@@ -15,13 +17,25 @@ object Application extends Controller {
 
   val shapeService = new DemoShapeService()
 
+  def setup = Action {
+    populateDB()
+    Redirect(routes.Application.index)
+  }
+
   def index() = Action.async {
     shapeService.listAll().map(ls => Ok(views.html.index(ls)))
   }
 
-  def setup = Action {
-    populateDB()
-    Redirect(routes.Application.index)
+  def findByCoordinates() = Action.async { implicit request =>
+    val latLngForm = Form(mapping(
+      "lat" -> bigDecimal,
+      "lng" -> bigDecimal
+    )(LatLng.apply)(LatLng.unapply))
+
+    val latLng = latLngForm.bindFromRequest().get
+    shapeService.findByCoordinate(latLng).map(result =>
+      Ok(views.html.findbycoordinates(latLng, result))
+    )
   }
 
   private def populateDB(): Unit = {
