@@ -1,18 +1,20 @@
+@(districts: List[String])
+
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>MODIS API</title>
+        <title>slick-spatial Demo</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
     </head>
     <body>
-        <h1>MODIS API</h1>
-
-        <p>The following API endpoints are supported:</p>
+        <h1>slick-spatial Demo</h1>
 
         <ul>
-            <li>none yet</li>
+            @districts.map { district =>
+                <li>@district</li>
+            }
         </ul>
     </body>
 </html>

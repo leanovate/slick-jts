@@ -11,7 +11,8 @@ import scala.io.Source
 object Application extends Controller {
 
   def index = Action {
-    Ok(views.html.index())
+    val districts = List("Mundenheim", "Oppau", "Pfingstweide")
+    Ok(views.html.index(districts))
   }
 
   def setup = Action {
