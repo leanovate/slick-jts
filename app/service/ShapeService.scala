@@ -1,6 +1,7 @@
 package service
 
 import java.sql.ResultSet
+import com.vividsolutions.jts.io.{ WKTReader, WKBWriter }
 import play.api.db.DB
 import scala.concurrent.Future
 
@@ -24,7 +25,7 @@ class DemoShapeService extends ShapeService {
     Future {
       DB.withConnection(c => {
         val resultSet = c.prepareStatement("select district_name from shapes").executeQuery()
-        val result = new RsIterator(resultSet).map(x => x.getString(1))
+        val result = new RsIterator(resultSet).map(row => row.getString(1))
         result.toList
       })
     }
@@ -33,13 +34,20 @@ class DemoShapeService extends ShapeService {
     Future {
       DB.withConnection(c => {
         // x/y are switched in the DB. y,x is therefore correct
-        val p = s"POINT(${latLng.lng},${latLng.lat})"
-        val sql = (s"select district_name from shapes where ST_Contains(shape, $p)")
-        val resultSet = c.prepareStatement(sql).executeQuery()
+        val p = s"POINT(${latLng.lng} ${latLng.lat})"
+        val wkb = new WKBWriter().write(new WKTReader().read(p))
 
-        if (resultSet.isAfterLast) None else Some(resultSet.getString(1))
+        val sql = "select district_name from shapes where ST_Contains(shape, ?)"
+        val stmt = c.prepareStatement(sql)
+        stmt.setBytes(1, wkb)
+        val resultSet = stmt.executeQuery()
+
+        println(resultSet)
+
+        if (resultSet.next()) Some(resultSet.getString(1)) else None
       })
     }
+
 
   def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]] = ???
 }
