@@ -10,7 +10,9 @@ libraryDependencies ++= Seq(
   jdbc,
   anorm,
   cache,
-  ws
+  ws,
+
+  "com.vividsolutions" % "jts" % "1.13"
 )
 
 
