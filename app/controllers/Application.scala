@@ -5,14 +5,18 @@ import play.api.mvc._
 import play.api.db._
 
 import play.api.Play.current
+import service.DemoShapeService
 
 import scala.io.Source
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 object Application extends Controller {
 
-  def index = Action {
-    val districts = List("Mundenheim", "Oppau", "Pfingstweide")
-    Ok(views.html.index(districts))
+  val shapeService = new DemoShapeService()
+
+  def index() = Action.async {
+    shapeService.listAll().map(ls => Ok(views.html.index(ls)))
   }
 
   def setup = Action {
