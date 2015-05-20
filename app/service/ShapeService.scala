@@ -31,7 +31,14 @@ class DemoShapeService extends ShapeService {
 
   def findByCoordinate(latLng: LatLng): Future[Option[String]] =
     Future {
-      Some("Friedrichshain")
+      DB.withConnection(c => {
+        // x/y are switched in the DB. y,x is therefore correct
+        val p = s"POINT(${latLng.lng},${latLng.lat})"
+        val sql = (s"select district_name from shapes where ST_Contains(shape, $p)")
+        val resultSet = c.prepareStatement(sql).executeQuery()
+
+        if (resultSet.isAfterLast) None else Some(resultSet.getString(1))
+      })
     }
 
   def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]] = ???
