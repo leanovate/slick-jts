@@ -10,7 +10,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 trait ShapeService {
   def listAll(): Future[List[String]]
-  def findByCoordinate(latLng: LatLng): Future[Option[String]]
+  def findByCoordinate(latLng: Point): Future[Option[String]]
   def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]]
 }
 
@@ -30,7 +30,7 @@ class DemoShapeService extends ShapeService {
       })
     }
 
-  def findByCoordinate(latLng: LatLng): Future[Option[String]] =
+  def findByCoordinate(latLng: Point): Future[Option[String]] =
     Future {
       DB.withConnection(c => {
         // x/y are switched in the DB. y,x is therefore correct
@@ -47,7 +47,6 @@ class DemoShapeService extends ShapeService {
         if (resultSet.next()) Some(resultSet.getString(1)) else None
       })
     }
-
 
   def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]] = ???
 }

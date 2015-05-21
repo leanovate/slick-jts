@@ -7,7 +7,7 @@ import play.api.mvc._
 import play.api.db._
 
 import play.api.Play.current
-import service.{ LatLng, DemoShapeService }
+import service.{ Point, DemoShapeService }
 
 import scala.io.Source
 
@@ -30,7 +30,7 @@ object Application extends Controller {
     val latLngForm = Form(mapping(
       "lat" -> bigDecimal,
       "lng" -> bigDecimal
-    )(LatLng.apply)(LatLng.unapply))
+    )(Point.apply)(Point.unapply))
 
     val latLng = latLngForm.bindFromRequest().get
     shapeService.findByCoordinate(latLng).map(result =>
