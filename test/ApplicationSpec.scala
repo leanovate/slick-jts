@@ -22,7 +22,7 @@ class ApplicationSpec extends Specification {
       Application.populateDB()
       val shapeService = new DemoShapeService()
       val result = Await.result(shapeService.findByCoordinate(LatLng(13.39873, 52.49439)), Duration("100 milliseconds"))
-      result must equalTo(Some("Kreuzberg (Kreuzberg)"))
+      result must equalTo(Some("Kreuzberg"))
     }
   }
 }
