@@ -46,7 +46,7 @@ object Application extends Controller {
     val lines = Source.fromFile(filename).getLines
     DB.withConnection { implicit c =>
       while (lines.hasNext) {
-        val (_, id, districtName, wkt) = (lines.next, lines.next, lines.next, lines.next)
+        val (id, districtName, wkt) = (lines.next, lines.next, lines.next)
 
         val stmt = c.prepareStatement("INSERT INTO SHAPES (id, district_name, shape) VALUES (?, ?, ?);")
         stmt.setInt(1, id.toInt)
