@@ -3,7 +3,7 @@ package service
 import java.sql.ResultSet
 import jtscala.WKTHelper
 import play.api.db.DB
-import WKTHelper.WKTString
+import jtscala.WKTHelper.{ WKTPreparedStatement, WKTString }
 import scala.concurrent.Future
 
 import play.api.Play.current
@@ -38,7 +38,8 @@ class DemoShapeService extends ShapeService {
 
         val sql = "select district_name from shapes where ST_Contains(shape, ?)"
         val stmt = c.prepareStatement(sql)
-        stmt.setBytes(1, wkt.toWKB)
+        stmt.setWKT(1, wkt)
+//        stmt.setBytes(1, wkt.toWKB)
         val resultSet = stmt.executeQuery()
 
         if (resultSet.next()) Some(resultSet.getString(1)) else None
