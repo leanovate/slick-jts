@@ -33,8 +33,7 @@ class DemoShapeService extends ShapeService {
   def findByCoordinate(latLng: Point): Future[Option[String]] =
     Future {
       DB.withConnection(c => {
-        // x/y are switched in the DB. y,x is therefore correct
-        val p = s"POINT(${latLng.lng} ${latLng.lat})"
+        val p = s"POINT(${latLng.lat} ${latLng.lng})"
         val wkb = new WKBWriter().write(new WKTReader().read(p))
 
         val sql = "select district_name from shapes where ST_Contains(shape, ?)"
