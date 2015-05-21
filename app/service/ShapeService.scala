@@ -1,9 +1,8 @@
 package service
 
 import java.sql.ResultSet
-import jtscala.WKTHelper
 import play.api.db.DB
-import jtscala.WKTHelper.{ WKTPreparedStatement, WKTString }
+import jtscala.WKTHelper._
 import scala.concurrent.Future
 
 import play.api.Play.current

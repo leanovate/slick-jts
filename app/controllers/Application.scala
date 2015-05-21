@@ -29,9 +29,8 @@ object Application extends Controller {
 
   def findByCoordinates() = Action.async { implicit request =>
     val latLngForm = Form(mapping(
-    // lat/lng switched bc data in db is messed up
-      "lng" -> bigDecimal,
-      "lat" -> bigDecimal
+      "lat" -> bigDecimal,
+      "lng" -> bigDecimal
     )(LatLng.apply)(LatLng.unapply))
 
     val latLng = latLngForm.bindFromRequest().get
