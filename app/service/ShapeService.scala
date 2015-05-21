@@ -1,8 +1,9 @@
 package service
 
 import java.sql.ResultSet
-import com.vividsolutions.jts.io.{ WKTReader, WKBWriter }
+import jtscala.WKTHelper
 import play.api.db.DB
+import WKTHelper.WKTString
 import scala.concurrent.Future
 
 import play.api.Play.current
@@ -33,15 +34,12 @@ class DemoShapeService extends ShapeService {
   def findByCoordinate(latLng: Point): Future[Option[String]] =
     Future {
       DB.withConnection(c => {
-        val p = s"POINT(${latLng.lat} ${latLng.lng})"
-        val wkb = new WKBWriter().write(new WKTReader().read(p))
+        val wkt = s"POINT(${latLng.lat} ${latLng.lng})"
 
         val sql = "select district_name from shapes where ST_Contains(shape, ?)"
         val stmt = c.prepareStatement(sql)
-        stmt.setBytes(1, wkb)
+        stmt.setBytes(1, wkt.toWKB)
         val resultSet = stmt.executeQuery()
-
-        println(resultSet)
 
         if (resultSet.next()) Some(resultSet.getString(1)) else None
       })

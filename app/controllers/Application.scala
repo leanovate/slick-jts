@@ -1,12 +1,13 @@
 package controllers
 
-import com.vividsolutions.jts.io.{ WKTReader, WKBWriter }
+import jtscala.WKTHelper
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
 import play.api.db._
 
 import play.api.Play.current
+import WKTHelper.WKTString
 import service.{ Point, DemoShapeService }
 
 import scala.io.Source
@@ -47,11 +48,10 @@ object Application extends Controller {
       while (lines.hasNext) {
         val (_, id, districtName, wkt) = (lines.next, lines.next, lines.next, lines.next)
 
-        val shape = new WKBWriter().write(new WKTReader().read(wkt))
         val stmt = c.prepareStatement("INSERT INTO SHAPES (id, district_name, shape) VALUES (?, ?, ?);")
         stmt.setInt(1, id.toInt)
         stmt.setString(2, districtName)
-        stmt.setBytes(3, shape)
+        stmt.setBytes(3, wkt.toWKB)
 
         stmt.execute()
       }
