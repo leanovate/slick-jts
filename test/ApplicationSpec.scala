@@ -17,12 +17,18 @@ class ApplicationSpec extends Specification {
       route(FakeRequest(GET, "/boum")) must beNone
     }
 
-
     "find shape using coordinates" in new WithApplication() {
       Application.populateDB()
       val shapeService = new DemoShapeService()
       val result = Await.result(shapeService.findByCoordinate(LatLng(13.39873, 52.49439)), Duration("100 milliseconds"))
       result must equalTo(Some("Kreuzberg"))
+    }
+
+    "find no shape using wrong coordinates" in new WithApplication() {
+      Application.populateDB()
+      val shapeService = new DemoShapeService()
+      val result = Await.result(shapeService.findByCoordinate(LatLng(0.0, 0.0)), Duration("100 milliseconds"))
+      result must equalTo(None)
     }
   }
 }
