@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 trait ShapeService {
   def listAll(): Future[List[String]]
-  def findByCoordinate(latLng: Point): Future[Option[String]]
+  def findByCoordinate(latLng: LatLng): Future[Option[String]]
   def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]]
 }
 
@@ -31,7 +31,7 @@ class DemoShapeService extends ShapeService {
       })
     }
 
-  def findByCoordinate(latLng: Point): Future[Option[String]] =
+  def findByCoordinate(latLng: LatLng): Future[Option[String]] =
     Future {
       DB.withConnection(c => {
         val wkt = s"POINT(${latLng.lat} ${latLng.lng})"
@@ -39,7 +39,6 @@ class DemoShapeService extends ShapeService {
         val sql = "select district_name from shapes where ST_Contains(shape, ?)"
         val stmt = c.prepareStatement(sql)
         stmt.setWKT(1, wkt)
-//        stmt.setBytes(1, wkt.toWKB)
         val resultSet = stmt.executeQuery()
 
         if (resultSet.next()) Some(resultSet.getString(1)) else None

@@ -7,8 +7,8 @@ import play.api.mvc._
 import play.api.db._
 
 import play.api.Play.current
-import WKTHelper.WKTString
-import service.{ Point, DemoShapeService }
+import jtscala.WKTHelper.{ WKTPreparedStatement, WKTString }
+import service.{ LatLng, DemoShapeService }
 
 import scala.io.Source
 
@@ -32,7 +32,7 @@ object Application extends Controller {
     // lat/lng switched bc data in db is messed up
       "lng" -> bigDecimal,
       "lat" -> bigDecimal
-    )(Point.apply)(Point.unapply))
+    )(LatLng.apply)(LatLng.unapply))
 
     val latLng = latLngForm.bindFromRequest().get
     shapeService.findByCoordinate(latLng).map(result =>
@@ -40,7 +40,7 @@ object Application extends Controller {
     )
   }
 
-  private def populateDB(): Unit = {
+  def populateDB(): Unit = {
     val filename = "app/assets/testdata"
 
     val lines = Source.fromFile(filename).getLines
@@ -51,7 +51,7 @@ object Application extends Controller {
         val stmt = c.prepareStatement("INSERT INTO SHAPES (id, district_name, shape) VALUES (?, ?, ?);")
         stmt.setInt(1, id.toInt)
         stmt.setString(2, districtName)
-        stmt.setBytes(3, wkt.toWKB)
+        stmt.setWKT(3, wkt)
 
         stmt.execute()
       }
