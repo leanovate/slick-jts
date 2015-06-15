@@ -1,48 +1,57 @@
 package service
 
-import java.sql.ResultSet
-import play.api.db.DB
-import jtscala.WKTHelper._
-import scala.concurrent.Future
+import service.Shapes.Shapes
+import slick.driver.H2Driver.api._
 
-import play.api.Play.current
-import scala.concurrent.ExecutionContext.Implicits.global
+import jtscala.WKTHelper._
+import scala.concurrent.{Await, Future}
 
 trait ShapeService {
-  def listAll(): Future[List[String]]
+  def populate(ls: List[String])
+
+  def listAll(): Future[Seq[String]]
   def findByCoordinate(latLng: LatLng): Future[Option[String]]
-  def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]]
+  def findByBoundingBox(boundingBox: BoundingBox) // : Future[List[String]]
 }
 
 class DemoShapeService extends ShapeService {
 
-  class RsIterator(rs: ResultSet) extends Iterator[ResultSet] {
-    def hasNext: Boolean = rs.next()
-    def next(): ResultSet = rs
+  val db = Database.forConfig("shapes")
+  val shapes: TableQuery[Shapes] = TableQuery[Shapes]
+
+  def populate(ls: List[String]) = {
+    db.withSession { implicit session =>
+      org.h2gis.h2spatialext.CreateSpatialExtension.initSpatialExtension(session.conn)
+    }
+
+    val data = ls.grouped(3).toList.map({
+      case List(id, districtName, wkt) => (id.toInt, districtName, wkt.toWKB)
+    })
+    val insertAction = shapes ++= data
+
+    val setupAction: DBIO[Unit] = DBIO.seq(
+      shapes.schema.create,
+      insertAction
+    )
+    db.run(setupAction)
   }
 
-  def listAll(): Future[List[String]] =
-    Future {
-      DB.withConnection(c => {
-        val resultSet = c.prepareStatement("select district_name from shapes").executeQuery()
-        val result = new RsIterator(resultSet).map(row => row.getString(1))
-        result.toList
-      })
-    }
+  val allShapesAction: DBIO[Seq[(Int, String, Array[Byte])]] = shapes.result
+  val allNamesAction: DBIO[Seq[String]] = shapes.map(_.districtName).result
 
-  def findByCoordinate(latLng: LatLng): Future[Option[String]] =
-    Future {
-      DB.withConnection(c => {
-        val wkt = s"POINT(${latLng.lat} ${latLng.lng})"
+  def listAll(): Future[Seq[String]] = db.run(allNamesAction)
 
-        val sql = "select district_name from shapes where ST_Contains(shape, ?)"
-        val stmt = c.prepareStatement(sql)
-        stmt.setWKT(1, wkt)
-        val resultSet = stmt.executeQuery()
+  def findByCoordinate(latLng: LatLng): Future[Option[String]] = {
+    val wkt = s"POINT(${latLng.lat} ${latLng.lng})"
+    val q = s"select district_name from shapes where ST_Contains(shape, $wkt)"
+    println(q)
 
-        if (resultSet.next()) Some(resultSet.getString(1)) else None
-      })
-    }
+    val sql = sql"select district_name from shapes where ST_Contains(shape, $wkt)".as[String].headOption
 
-  def findByBoundingBox(boundingBox: BoundingBox): Future[List[String]] = ???
+    sql.statements.toList.foreach(println _)
+    db.run(sql)
+  }
+
+
+  def findByBoundingBox(boundingBox: BoundingBox) = ???
 }
