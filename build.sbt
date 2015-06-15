@@ -22,7 +22,8 @@ val commonClassLoader: Classpath => ClassLoader = {
   classpath => {
     if (common == null) {
       val jars = classpath.map(_.data).collect {
-        case jar if jar.getName.startsWith("h2-") || jar.getName == "h2.jar" || jar.getName.startsWith("h2gis") => jar.toURI.toURL
+        case jar if jar.getName.startsWith("h2-") || jar.getName == "h2.jar" ||
+          jar.getName.startsWith("h2gis") || jar.getName.startsWith("jts") => jar.toURI.toURL
       }
       common = new java.net.URLClassLoader(jars.toArray, null)
     }
