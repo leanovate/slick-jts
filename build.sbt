@@ -1,4 +1,4 @@
-name := """slick-jts"""
+name := """slick-spatial"""
 
 version := "1.0-SNAPSHOT"
 
