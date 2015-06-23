@@ -1,9 +1,13 @@
 package controllers
 
+import jtscala.WKTHelper
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
+import play.api.db._
 
+import play.api.Play.current
+import jtscala.WKTHelper.{ WKTPreparedStatement, WKTString }
 import service.{ LatLng, DemoShapeService }
 
 import scala.io.Source
@@ -37,7 +41,19 @@ object Application extends Controller {
 
   def populateDB(): Unit = {
     val filename = "app/assets/testdata"
-    val lines = Source.fromFile(filename).getLines.toList
-    shapeService.populate(lines)
+
+    val lines = Source.fromFile(filename).getLines
+    DB.withConnection { implicit c =>
+      while (lines.hasNext) {
+        val (id, districtName, wkt) = (lines.next, lines.next, lines.next)
+
+        val stmt = c.prepareStatement("INSERT INTO SHAPES (id, district_name, shape) VALUES (?, ?, ?);")
+        stmt.setInt(1, id.toInt)
+        stmt.setString(2, districtName)
+        stmt.setWKT(3, wkt)
+
+        stmt.execute()
+      }
+    }
   }
 }
