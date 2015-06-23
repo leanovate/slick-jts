@@ -44,6 +44,7 @@ class ApplicationSpec extends Specification {
       val shapeService: DemoShapeService = new DemoShapeService()
       val result = Await.result(shapeService.findByBoundingBox(BoundingBox(50, 10, 55, 15)), Duration("100 milliseconds"))
       result must contain("Kreuzberg")
+      result.size must beGreaterThan(1)
     }
 
     "find by extremely small bounding box results in list with one entry" in new WithApplication() {
@@ -51,6 +52,7 @@ class ApplicationSpec extends Specification {
       val shapeService: DemoShapeService = new DemoShapeService()
       val result = Await.result(shapeService.findByBoundingBox(BoundingBox(52.49439, 13.39873, 52.49438, 13.39872)), Duration("100 milliseconds"))
       result must contain("Kreuzberg")
+      result must haveSize(1)
     }
   }
 }

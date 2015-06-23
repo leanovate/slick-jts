@@ -56,10 +56,7 @@ class DemoShapeService extends ShapeService {
       stmt.setWKT(1, wkt)
       val resultSet = stmt.executeQuery()
 
-      if (resultSet.next)
-        nextValue(resultSet)
-      else
-        Seq()
+      new RsIterator(resultSet).map(row => row.getString(1)).toList
     })
   }
 
