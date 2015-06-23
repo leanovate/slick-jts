@@ -1,3 +1,3 @@
 package service
 
-case class BoundingBox(neLat: Double, neLng: Double, swLat: Double, swLng: Double)
+case class BoundingBox(upperLeftLat: Double, upperLeftLng: Double, lowerRightLat: Double, lowerRightLng: Double)
