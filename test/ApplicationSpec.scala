@@ -36,7 +36,7 @@ class ApplicationSpec extends Specification {
       Application.populateDB()
       val shapeService: DemoShapeService = new DemoShapeService()
       val result = Await.result(shapeService.findByBoundingBox(BoundingBox(0.0, 0.0, 0.0, 0.0)), Duration("100 milliseconds"))
-      result must be empty
+      result must beEmpty
     }
 
     "find by extremely large bounding box results in list with one entry" in new WithApplication() {
