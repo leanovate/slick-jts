@@ -51,7 +51,7 @@ class DemoShapeService extends ShapeService {
     DB.withConnection(c => {
       val wkt = s"POLYGON((${boundingBox.upperLeftLat} ${boundingBox.upperLeftLng}, ${boundingBox.lowerRightLat} ${boundingBox.upperLeftLng}, ${boundingBox.lowerRightLat} ${boundingBox.lowerRightLng}, ${boundingBox.upperLeftLat} ${boundingBox.lowerRightLng}, ${boundingBox.upperLeftLat} ${boundingBox.upperLeftLng}))"
 
-      val sql = "select district_name from shapes where ST_Contains(shape, ?)"
+      val sql = "select district_name from shapes where ST_Contains(?, shape)"
       val stmt = c.prepareStatement(sql)
       stmt.setWKT(1, wkt)
       val resultSet = stmt.executeQuery()

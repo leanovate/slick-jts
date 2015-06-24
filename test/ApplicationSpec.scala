@@ -42,17 +42,17 @@ class ApplicationSpec extends Specification {
     "find by extremely large bounding box results in list with one entry" in new WithApplication() {
       Application.populateDB()
       val shapeService: DemoShapeService = new DemoShapeService()
-      val result = Await.result(shapeService.findByBoundingBox(BoundingBox(50, 10, 55, 15)), Duration("100 milliseconds"))
+      val result = Await.result(shapeService.findByBoundingBox(BoundingBox(55, 10, 50, 15)), Duration("100 milliseconds"))
       result must contain("Kreuzberg")
-      result.size must beGreaterThan(1)
+      result must haveSize(81)
     }
 
-    "find by extremely small bounding box results in list with one entry" in new WithApplication() {
+    "find only Rummelsburg by bounding box" in new WithApplication() {
       Application.populateDB()
       val shapeService: DemoShapeService = new DemoShapeService()
-      val result = Await.result(shapeService.findByBoundingBox(BoundingBox(52.49439, 13.39873, 52.49438, 13.39872)), Duration("100 milliseconds"))
-      result must contain("Kreuzberg")
+      val result = Await.result(shapeService.findByBoundingBox(BoundingBox(52.499055862427, 13.4752368927, 52.493432998657, 13.484037399292)), Duration("100 milliseconds"))
       result must haveSize(1)
+      result must contain("Rummelsburg")
     }
   }
 }
