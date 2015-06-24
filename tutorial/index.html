@@ -1,14 +1,114 @@
+<html>
+<head>
+    <title>slick-spatial Tutorial</title>
+</head>
 <body>
 
-    <div>
-        <h2>Test1</h2>
-        Der erste Abschnitt
-    </div>
+<div>
+    <h2>JTS & Spatial</h2>
+    This document describes what is necessary to set up a database with spatial features enabled and uses JTS on
+    top of that for calculation. Both features incorporated into a play/scala application
+</div>
 
-    <div>
-        <h2>Test2</h2>
-        Noch ein total wichtiger Abschnitt...
-    </div>
+<div>
+    <h2>Set up the database</h2>
+    Consider the following scenario:
+    You want to store districts with a shape (most likely a polygon) natively in your database. You could do the
+    following:
+    <pre>
+        CREATE TABLE shapes (
+            id bigint(20) NOT NULL,
+            district_name varchar(255) NOT NULL,
+            shape BLOB NOT NULL,
+            PRIMARY KEY (id)
+        );
+    </pre>
+    with <code>shape</code> being your column for that ploygon data. This would leave the marshalling and unmarshalling
+    of
+    the BLOB to the user of the table. That's very inconvenient.
+</div>
 
+<div>
+    <h2>Enter Spatial</h2>
+    Now there are lots of databases that support geographical data like polygons - the most famous being PostgreQSL. But
+    there are others as well like Mysql and Oracle. The spatial feature provides the datatype <code>geometry</code>. So
+    your table definition could look like:
+    <pre>
+        CREATE TABLE shapes (
+            id bigint(20) NOT NULL,
+            district_name varchar(255) NOT NULL,
+            shape geometry NOT NULL,
+            PRIMARY KEY (id)
+        );
+    </pre>
+    Now it's easy for the consumer of the table to interpret the <code>shape</code> column.
+</div>
+
+<div>
+    <h2>Enable Spatial</h2>
+    In this project we're using H2 as an in-memory-database. H2 supports spatial. To enable we depend on
+    <pre>
+            &lt;groupId&gt;org.orbisgis&lt;/groupId&gt;
+            &lt;artifactId&gt;h2gis&lt;/artifactId&gt;
+            &lt;version&gt;1.2.2-SNAPSHOT&lt;/version&gt;
+    </pre>
+    and put a snippet into our evolution scripts:
+    <pre>
+        CREATE ALIAS IF NOT EXISTS SPATIAL_INIT FOR
+          "org.h2gis.h2spatialext.CreateSpatialExtension.initSpatialExtension";
+        CALL SPATIAL_INIT();
+    </pre>
+</div>
+
+<div>
+    <h2>Bootstrapping the Database</h2>
+    Let's have a look at how we can now load data into our database. We have a file with entries like these:
+    <pre>
+        1
+        Adlershof
+        POLYGON ((52.431486129761 13.563772201538, [...], 52.431486129761 13.563772201538))
+    </pre>
+    The last line is essentially our shape. We can store this including its semantics as well known text. Well
+    known text a concept taken from JTS.
+
+    Now let's store the values:
+    <pre>
+        val stmt = c.prepareStatement("INSERT INTO SHAPES (id, district_name, shape) VALUES (?, ?, ?);")
+        stmt.setInt(1, id.toInt)
+        stmt.setString(2, districtName)
+        stmt.setWKT(3, wkt)
+
+        stmt.execute()
+    </pre>
+</div>
+
+<div>
+    <h2>Querying Spatial Database</h2>
+    Query our database using spatial feature is pretty easy.
+    <pre>
+        val sql = "select district_name from shapes where ST_Contains(shape, ?)"
+        val stmt = c.prepareStatement(sql)
+        stmt.setWKT(1, wkt)
+        val resultSet = stmt.executeQuery()
+    </pre>
+    You prepare a statement and use a user given geometry in the format of well known text as parameter for querying.
+    In this case you check whether the given geometry is contained within any stored district.
+</div>
+
+<div>
+    <h2>Adding spatial features to sql statements</h2>
+    Have a look at the class <code>WKTHelper</code>. You'll find the necessary conversion there.
+    <pre>
+          implicit class WKTPreparedStatement(val stmt: PreparedStatement) {
+            def setWKT(parameterIndex: Int, wkt: String) = stmt.setBytes(parameterIndex, wkt.toWKB)
+         }
+    </pre>
+</div>
+
+<div>
+    <h2>Testing the application</h2>
+    You can start the application and open a browser on port 9000. We have prepared a test page with district data
+    of Berlin for you. Have querying!
+</div>
 </body>
-
+</html>
