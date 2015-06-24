@@ -1,18 +1,15 @@
 package controllers
 
-import jtscala.WKTHelper
-import play.api.data._
-import play.api.data.Forms._
-import play.api.mvc._
-import play.api.db._
-
+import jtscala.WKTHelper.WKTPreparedStatement
 import play.api.Play.current
-import jtscala.WKTHelper.{ WKTPreparedStatement, WKTString }
-import service.{ LatLng, DemoShapeService }
-
-import scala.io.Source
+import play.api.data.Forms._
+import play.api.data._
+import play.api.db._
+import play.api.mvc._
+import service.{BoundingBox, DemoShapeService, LatLng}
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.io.Source
 
 object Application extends Controller {
 
@@ -36,6 +33,20 @@ object Application extends Controller {
     val latLng = latLngForm.bindFromRequest().get
     shapeService.findByCoordinate(latLng).map(result =>
       Ok(views.html.findbycoordinates(latLng, result))
+    )
+  }
+
+  def findByBoundingBox() = Action.async { implicit request =>
+    val boundingBoxForm = Form(mapping(
+      "upperLeftLat" -> bigDecimal,
+      "upperLeftLng" -> bigDecimal,
+      "lowerRightLat" -> bigDecimal,
+      "lowerRightLng" -> bigDecimal
+    )(BoundingBox.apply)(BoundingBox.unapply))
+
+    val boundingBox = boundingBoxForm.bindFromRequest().get
+    shapeService.findByBoundingBox(boundingBox).map(result =>
+      Ok(views.html.findbyboundingbox(boundingBox, result))
     )
   }
 

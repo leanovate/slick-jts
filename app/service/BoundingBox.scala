@@ -1,3 +1,3 @@
 package service
 
-case class BoundingBox(upperLeftLat: Double, upperLeftLng: Double, lowerRightLat: Double, lowerRightLng: Double)
+case class BoundingBox(upperLeftLat: BigDecimal, upperLeftLng: BigDecimal, lowerRightLat: BigDecimal, lowerRightLng: BigDecimal)

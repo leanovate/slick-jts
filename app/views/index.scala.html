@@ -10,8 +10,14 @@
     </head>
     <script>
         function fillLatLng(lat, lng) {
-            document.getElementById("lat").value = lat
-            document.getElementById("lng").value = lng
+            document.getElementById("lat").value = lat;
+            document.getElementById("lng").value = lng;
+        }
+        function fillBoundingBox(ulLat, ulLng, lrLat, lrLng) {
+            document.getElementById("upperLeftLat").value = ulLat;
+            document.getElementById("upperLeftLng").value = ulLng;
+            document.getElementById("lowerRightLat").value = lrLat;
+            document.getElementById("lowerRightLng").value = lrLng;
         }
     </script>
     <body>
@@ -23,7 +29,20 @@
             Lng: <input id="lng" type="text" name="lng" />
             <button type="submit">Finde</button>
         </form>
-        <p><a href="#" onclick="fillLatLng(52.49439,13.39873)">Blücherstraße 22</a></p>
+      <p><a href="#" onclick="fillLatLng(52.49439,13.39873)">Blücherstraße 22</a></p>
+
+      <h2>find-by-bounding-box</h2>
+      <form action="find-by-bounding-box">
+          <p>upper left</p>
+          Lat: <input id="upperLeftLat" type="text" name="upperLeftLat" />
+          Lng: <input id="upperLeftLng" type="text" name="upperLeftLng" />
+        <p> lower right</p>
+          Lat: <input id="lowerRightLat" type="text" name="lowerRightLat" />
+          Lng: <input id="lowerRightLng" type="text" name="lowerRightLng" />
+        <button type="submit">Finde</button>
+        </form>
+      <p><a href="#" onclick="fillBoundingBox(52.499055862427, 13.4752368927, 52.493432998657, 13.484037399292)">Rummelsburg</a></p>
+
 
         <h2>Alle Bezirke</h2>
         <ul>
