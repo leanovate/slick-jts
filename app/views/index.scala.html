@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>slick-spatial Demo</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-    </head>
-    <script>
+  <head>
+    <title>slick-spatial Demo</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+  </head>
+  <script>
         function fillLatLng(lat, lng) {
             document.getElementById("lat").value = lat;
             document.getElementById("lng").value = lng;
@@ -20,35 +20,81 @@
             document.getElementById("lowerRightLng").value = lrLng;
         }
     </script>
-    <body>
-        <h1>slick-spatial Demo</h1>
+  <body>
+    <h1>slick-spatial Demo</h1>
 
-        <h2>find-by-coordinate</h2>
+    <p>
+      You can search for districts in Berlin/Germany. We have a database with spatial features enabled in the background.
+      So either we can tell you to which district a coordiate belongs or we can tell you which districts are within a
+      given rectangle.
+    </p>
+    <div class="table">
+      <div class="table-cell one-half panel">
+        <h2>find-by-coordinates</h2>
+        <p>
+        Insert your coordinates and we'll show you the district of Berlin this point is in.
+        </p>
         <form action="find-by-coordinates">
-            Lat: <input id="lat" type="text" name="lat" />
-            Lng: <input id="lng" type="text" name="lng" />
-            <button type="submit">Finde</button>
+          <div class="table">
+            <div class="table-cell one-half">
+              <label for="lat">Lat:</label>
+              <input id="lat" type="text" name="lat" />
+            </div>
+            <div class="table-cell one-half">
+              <label for="lng">Lng:</label>
+              <input id="lng" type="text" name="lng" />
+            </div>
+          </div>
+          <button type="submit" class="button">Find</button>
         </form>
-      <p><a href="#" onclick="fillLatLng(52.49439,13.39873)">Blücherstraße 22</a></p>
+        <p>Maybe you want to try out a predefined coordinate:
+          <a href="#" onclick="fillLatLng(52.49439,13.39873)">Blücherstraße 22</a> </p>
+      </div>
 
-      <h2>find-by-bounding-box</h2>
-      <form action="find-by-bounding-box">
-          <p>upper left</p>
-          Lat: <input id="upperLeftLat" type="text" name="upperLeftLat" />
-          Lng: <input id="upperLeftLng" type="text" name="upperLeftLng" />
-        <p> lower right</p>
-          Lat: <input id="lowerRightLat" type="text" name="lowerRightLat" />
-          Lng: <input id="lowerRightLng" type="text" name="lowerRightLng" />
-        <button type="submit">Finde</button>
+      <div class="table-cell one-half panel">
+        <h2>find-by-bounding-box</h2>
+        <p>
+        Insert the boundaries of your rectangle and we'll show you all districts of Berlin contained in this rectangle.
+        </p>
+        <form action="find-by-bounding-box">
+          <div class="table">
+            <div class="table-cell">upper left corner:</div>
+            <div class=" table-cell table">
+              <div class="table-cell one-half">
+                <label for="upperLeftLat">Lat:</label>
+                <input id="upperLeftLat" type="text" name="upperLeftLat" />
+              </div>
+              <div class="table-cell one-half">
+                <label for="upperLeftLng">Lng:</label>
+                <input id="upperLeftLng" type="text" name="upperLeftLng" />
+              </div>
+            </div>
+            <div class="table-cell">lower right corner</div>
+            <div class=" table-cell table">
+              <div class="table-cell one-half">
+                <label for="lowerRightLat">Lat:</label>
+                <input id="lowerRightLat" type="text" name="lowerRightLat" />
+              </div>
+              <div class="table-cell one-half">
+                <label for="lowerRightLng">Lng:</label>
+                <input id="lowerRightLng" type="text" name="lowerRightLng" />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="button">Find</button>
         </form>
-      <p><a href="#" onclick="fillBoundingBox(52.499055862427, 13.4752368927, 52.493432998657, 13.484037399292)">Rummelsburg</a></p>
+        <p>Maybe you want to try out the predefined shape for
+          <a href="#" onclick="fillBoundingBox(52.499055862427, 13.4752368927, 52.493432998657, 13.484037399292)">Rummelsburg</a>
+        </p>
+      </div>
+    </div>
 
+    <h2>All districts</h2>
+    <ul>
+    @districts.map { district =>
+      <li>@district</li>
+    }
+    </ul>
 
-        <h2>Alle Bezirke</h2>
-        <ul>
-            @districts.map { district =>
-                <li>@district</li>
-            }
-        </ul>
-    </body>
+  </body>
 </html>

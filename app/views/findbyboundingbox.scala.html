@@ -10,11 +10,14 @@
   </head>
 
   <body>
-    Der gegebene Umriß (@boundingBox.upperLeftLat, @boundingBox.upperLeftLng / @boundingBox.lowerRightLat, @boundingBox.lowerRightLng) enthält folgende Bezirke:
-    <ul>
+    <h1>slick-spatial Demo</h1>
+    <div class="panel">
+      The given bounding box (@boundingBox.upperLeftLat, @boundingBox.upperLeftLng / @boundingBox.lowerRightLat, @boundingBox.lowerRightLng) contains the following districts:
+  <ul>
     @result.map { district =>
       <li>@district</li>
     }
-    </ul>
+  </ul>
+    </div>
   </body>
 </html>

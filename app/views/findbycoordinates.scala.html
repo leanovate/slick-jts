@@ -3,14 +3,17 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>slick-spatial Demo</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-    </head>
+  <head>
+    <title>slick-spatial Demo</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+  </head>
 
-    <body>
-        Die gesuchte Koordinate (@latLng.lat, @latLng.lng)
-        @result.fold(" wurde nicht gefunden")(district => " liegt in " + district)
-    </body>
+  <body>
+    <h1>slick-spatial Demo</h1>
+    <p class="panel">
+    The given coordinate (@latLng.lat, @latLng.lng)
+      @result.fold(" was not found")(district => " is within " + district)
+    </p>
+  </body>
 </html>

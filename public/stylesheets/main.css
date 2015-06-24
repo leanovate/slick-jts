@@ -1,0 +1,40 @@
+.one-half {
+    width: 48% !important;
+    padding: 0.5%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
+}
+
+.table {
+    display: block;
+    border: 0 none;
+    box-sizing: border-box;
+    outline: 0 none;
+    width: 100%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.table-cell {
+    display: block;
+    float: left;
+    width: 98%;
+    vertical-align: top;
+    text-align: left;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+}
+
+form {
+    background: lightgrey;
+    border: solid;
+}
+
+.button {
+    alignment: right;
+    font-size: medium;
+}
+
+.panel {
+    background: #eeeeee;
+    text-indent: 0.5%;
+}
