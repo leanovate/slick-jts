@@ -16,7 +16,7 @@ trait ShapeService {
   def findByBoundingBox(boundingBox: BoundingBox): Future[Seq[String]]
 }
 
-class DemoShapeService extends ShapeService {
+class H2ShapeService extends ShapeService {
 
   class RsIterator(rs: ResultSet) extends Iterator[ResultSet] {
     def hasNext: Boolean = rs.next()
@@ -58,13 +58,5 @@ class DemoShapeService extends ShapeService {
 
       new RsIterator(resultSet).map(row => row.getString(1)).toList
     })
-  }
-
-  private def nextValue(resultSet: ResultSet): Seq[String] = {
-    val districtName: String = resultSet.getString(1)
-    if (resultSet.next)
-      Seq(districtName) ++ nextValue(resultSet)
-    else
-      Seq(districtName)
   }
 }

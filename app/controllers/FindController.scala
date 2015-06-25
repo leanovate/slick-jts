@@ -3,13 +3,13 @@ package controllers
 import play.api.data.Forms._
 import play.api.data._
 import play.api.mvc._
-import service.{BoundingBox, DemoShapeService, LatLng}
+import service.{BoundingBox, H2ShapeService, LatLng}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class FindController extends Controller {
 
-  val shapeService = new DemoShapeService()
+  val shapeService = new H2ShapeService()
 
   def index = Action.async {
     shapeService.listAll().map(ls => Ok(views.html.index(ls)))
