@@ -5,8 +5,12 @@
 <body>
 
 <div>
-    <h2>JTS & Spatial</h2>
-    This document describes what is necessary to set up a database with spatial features enabled and uses JTS on
+    <h2>Slick & Spatial</h2>
+    This template demonstrates how
+    <a href="http://slick.typesafe.com/">Slick 2.x</a> can be enhanced with features for spatial search.
+
+    This document describes what is necessary to set up a database with spatial features enabled and use
+    <a href="https://en.wikipedia.org/wiki/JTS_Topology_Suite">JTS</a> on
     top of that for calculation. Both features incorporated into a play/scala application
 </div>
 
@@ -30,7 +34,7 @@
 
 <div>
     <h2>Enter Spatial</h2>
-    Now there are lots of databases that support geographical data like polygons - the most famous being PostgreQSL. But
+    Now there are lots of databases that support geographical data like polygons - the most famous being PostgreSQL. But
     there are others as well like Mysql and Oracle. The spatial feature provides the datatype <code>geometry</code>. So
     your table definition could look like:
     <pre>
@@ -48,9 +52,10 @@
     <h2>Enable Spatial</h2>
     In this project we're using H2 as an in-memory-database. H2 supports spatial. To enable we depend on
     <pre>
-            &lt;groupId&gt;org.orbisgis&lt;/groupId&gt;
-            &lt;artifactId&gt;h2gis&lt;/artifactId&gt;
-            &lt;version&gt;1.2.2-SNAPSHOT&lt;/version&gt;
+        libraryDependencies ++= Seq(
+          "com.vividsolutions" % "jts" % "1.13",
+          "org.orbisgis" % "h2spatial-ext" % "1.2.2"
+        )
     </pre>
     and put a snippet into our evolution scripts:
     <pre>
@@ -113,9 +118,17 @@
 
 <div>
     <h2>Caveats</h2>
-    This version of <code>jts</code> does not seem to work natively with the <code>reactive streams</code> of
-    slick &gt;= 3.0.0. Instead of <code>geometry</code> objects. The library functions of <code>jts</code>
-    are called with streams.
+    <ul>
+        <li>
+            This version of <code>jts</code> does not seem to work natively with the <code>reactive streams</code> of
+            slick &gt;= 3.0.0. Instead of <code>geometry</code> objects. The library functions of <code>jts</code>
+            are called with streams.
+        </li>
+        <li>
+            This demo showcases the use of JTS with H2. If you want to use another database the SQL queries may be different.
+        </li>
+    </ul>
+
 </div>
 </body>
 </html>

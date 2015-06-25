@@ -8,10 +8,6 @@ scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
   jdbc,
-  anorm,
-  cache,
-  ws,
-
   "com.vividsolutions" % "jts" % "1.13",
   "org.orbisgis" % "h2spatial-ext" % "1.2.2"
 )
