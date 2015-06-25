@@ -3,10 +3,9 @@
 # ~~~~
 
 
-GET        /                           controllers.Application.setup
-GET        /index                      controllers.Application.index
-GET        /find-by-coordinates        controllers.Application.findByCoordinates
-GET        /find-by-bounding-box       controllers.Application.findByBoundingBox
+GET        /                           @controllers.FindController.index
+GET        /find-by-coordinates        @controllers.FindController.findByCoordinates
+GET        /find-by-bounding-box       @controllers.FindController.findByBoundingBox
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file               controllers.Assets.at(path="/public", file)
