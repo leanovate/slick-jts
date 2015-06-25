@@ -12,7 +12,8 @@ libraryDependencies ++= Seq(
   cache,
   ws,
 
-  "com.vividsolutions" % "jts" % "1.13"
+  "com.vividsolutions" % "jts" % "1.13",
+  "org.orbisgis" % "h2spatial-ext" % "1.2.2"
 )
 
 // https://groups.google.com/forum/#!topic/play-framework/Efh1am71XtA
