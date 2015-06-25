@@ -108,7 +108,14 @@
 <div>
     <h2>Testing the application</h2>
     You can start the application and open a browser on port 9000. We have prepared a test page with district data
-    of Berlin for you. Have querying!
+    of Berlin for you. Have fun querying!
+</div>
+
+<div>
+    <h2>Caveats</h2>
+    This version of <code>jts</code> does not seem to work natively with the <code>reactive streams</code> of
+    slick &gt;= 3.0.0. Instead of <code>geometry</code> objects. The library functions of <code>jts</code>
+    are called with streams.
 </div>
 </body>
 </html>
