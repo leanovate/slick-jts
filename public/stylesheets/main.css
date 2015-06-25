@@ -52,3 +52,15 @@ h2 {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+input:required + label::before {
+    position: absolute;
+    left: 300%;
+    content: "★";
+    color: red;
+}
+
+input:required:valid + label::before {
+    content: "✔";
+    color: green;
+}
