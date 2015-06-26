@@ -22,27 +22,23 @@ class ShapeServiceSpec extends Specification {
       result must equalTo(Some("Friedrichshain-Kreuzberg"))
     }
 
-    "find no shape using wrong coordinates" in new WithApplication {
-      val shapeService = new H2ShapeService()
+    "find no shape using wrong coordinates" in new WithApplication with ServiceModule {
       val result = Await.result(shapeService.findByCoordinate(LatLng(0.0, 0.0)), Duration("100 milliseconds"))
       result must equalTo(None)
     }
 
-    "find by wrong bounding box results in empty list" in new WithApplication {
-      val shapeService: H2ShapeService = new H2ShapeService()
+    "find by wrong bounding box results in empty list" in new WithApplication with ServiceModule {
       val result = Await.result(shapeService.findByBoundingBox(BoundingBox(0.0, 0.0, 0.0, 0.0)), Duration("100 milliseconds"))
       result must beEmpty
     }
 
-    "find all boroughs by extremely large bounding box" in new WithApplication() {
-      val shapeService: H2ShapeService = new H2ShapeService()
+    "find all boroughs by extremely large bounding box" in new WithApplication with ServiceModule {
       val result = Await.result(shapeService.findByBoundingBox(BoundingBox(55, 10, 50, 15)), Duration("100 milliseconds"))
       result must contain("Friedrichshain-Kreuzberg")
       result must haveSize(12)
     }
 
-    "find only Mitte by bounding box" in new WithApplication() {
-      val shapeService: H2ShapeService = new H2ShapeService()
+    "find only Mitte by bounding box" in new WithApplication with ServiceModule {
       val result = Await.result(shapeService.findByBoundingBox(BoundingBox(52.49873648364294, 13.42940239358947, 52.56773557617564, 13.30153005428186)), Duration("100 milliseconds"))
       result must haveSize(1)
       result must contain("Mitte")

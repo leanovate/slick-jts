@@ -2,6 +2,6 @@ package service
 
 import com.softwaremill.macwire._
 
-class ServiceModule {
+trait ServiceModule {
   lazy val shapeService = wire[H2ShapeService]
 }
