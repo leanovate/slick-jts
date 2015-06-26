@@ -19,7 +19,7 @@ class ShapeServiceSpec extends Specification {
     "find shape using coordinates" in new WithApplication() {
       val shapeService = new H2ShapeService()
       val result = Await.result(shapeService.findByCoordinate(LatLng(52.49439, 13.39873)), Duration("100 milliseconds"))
-      result must equalTo(Some("Kreuzberg"))
+      result must equalTo(Some("Friedrichshain-Kreuzberg"))
     }
 
     "find no shape using wrong coordinates" in new WithApplication {
@@ -34,18 +34,18 @@ class ShapeServiceSpec extends Specification {
       result must beEmpty
     }
 
-    "find by extremely large bounding box results in list with one entry" in new WithApplication() {
+    "find all boroughs by extremely large bounding box" in new WithApplication() {
       val shapeService: H2ShapeService = new H2ShapeService()
       val result = Await.result(shapeService.findByBoundingBox(BoundingBox(55, 10, 50, 15)), Duration("100 milliseconds"))
-      result must contain("Kreuzberg")
-      result must haveSize(81)
+      result must contain("Friedrichshain-Kreuzberg")
+      result must haveSize(12)
     }
 
-    "find only Rummelsburg by bounding box" in new WithApplication() {
+    "find only Mitte by bounding box" in new WithApplication() {
       val shapeService: H2ShapeService = new H2ShapeService()
-      val result = Await.result(shapeService.findByBoundingBox(BoundingBox(52.499055862427, 13.4752368927, 52.493432998657, 13.484037399292)), Duration("100 milliseconds"))
+      val result = Await.result(shapeService.findByBoundingBox(BoundingBox(52.49873648364294, 13.42940239358947, 52.56773557617564, 13.30153005428186)), Duration("100 milliseconds"))
       result must haveSize(1)
-      result must contain("Rummelsburg")
+      result must contain("Mitte")
     }
   }
 }

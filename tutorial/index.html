@@ -17,12 +17,12 @@
 <div>
     <h2>Set up the database</h2>
     Consider the following scenario:
-    You want to store districts with a shape (most likely a polygon) natively in your database. You could do the
+    You want to store boroughs with a shape (most likely a polygon) natively in your database. You could do the
     following:
     <pre>
         CREATE TABLE shapes (
             id bigint(20) NOT NULL,
-            district_name varchar(255) NOT NULL,
+            borough_name varchar(255) NOT NULL,
             shape BLOB NOT NULL,
             PRIMARY KEY (id)
         );
@@ -40,7 +40,7 @@
     <pre>
         CREATE TABLE shapes (
             id bigint(20) NOT NULL,
-            district_name varchar(255) NOT NULL,
+            borough_name varchar(255) NOT NULL,
             shape geometry NOT NULL,
             PRIMARY KEY (id)
         );
@@ -78,9 +78,9 @@
 
     Now let's store the values:
     <pre>
-        val stmt = c.prepareStatement("INSERT INTO SHAPES (id, district_name, shape) VALUES (?, ?, ?);")
+        val stmt = c.prepareStatement("INSERT INTO SHAPES (id, borough_name, shape) VALUES (?, ?, ?);")
         stmt.setInt(1, id.toInt)
-        stmt.setString(2, districtName)
+        stmt.setString(2, boroughName)
         stmt.setWKT(3, wkt)
 
         stmt.execute()
@@ -91,13 +91,13 @@
     <h2>Querying Spatial Database</h2>
     Query our database using spatial feature is pretty easy.
     <pre>
-        val sql = "select district_name from shapes where ST_Contains(shape, ?)"
+        val sql = "select borough_name from shapes where ST_Contains(shape, ?)"
         val stmt = c.prepareStatement(sql)
         stmt.setWKT(1, wkt)
         val resultSet = stmt.executeQuery()
     </pre>
     You prepare a statement and use a user given geometry in the format of well known text as parameter for querying.
-    In this case you check whether the given geometry is contained within any stored district.
+    In this case you check whether the given geometry is contained within any stored borough.
 </div>
 
 <div>
@@ -112,7 +112,7 @@
 
 <div>
     <h2>Testing the application</h2>
-    You can start the application and open a browser on port 9000. We have prepared a test page with district data
+    You can start the application and open a browser on port 9000. We have prepared a test page with borough data
     of Berlin for you. Have fun querying!
 </div>
 

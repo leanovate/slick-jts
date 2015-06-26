@@ -1,4 +1,4 @@
-@(districts: Seq[String])
+@(boroughs: Seq[String])
 
 <!DOCTYPE html>
 
@@ -24,15 +24,15 @@
     <h1>slick-spatial Demo</h1>
 
     <p>
-      You can search for districts in Berlin/Germany. We have a database with spatial features enabled in the background.
-      So either we can tell you to which district a coordiate belongs or we can tell you which districts are within a
+      You can search for boroughs in Berlin/Germany. We have a database with spatial features enabled in the background.
+      So either we can tell you to which borough a coordiate belongs or we can tell you which boroughs are within a
       given rectangle.
     </p>
     <div class="table">
       <div class="table-cell one-half panel">
         <h2>find-by-coordinates</h2>
         <p>
-        Insert your coordinates and we'll show you the district of Berlin this point is in.
+        Insert your coordinates and we'll show you the borough of Berlin this point is in.
         </p>
         <form action="find-by-coordinates">
           <div class="table">
@@ -54,7 +54,7 @@
       <div class="table-cell one-half panel">
         <h2>find-by-bounding-box</h2>
         <p>
-        Insert the boundaries of your rectangle and we'll show you all districts of Berlin contained in this rectangle.
+        Insert the boundaries of your rectangle and we'll show you all borough of Berlin contained in this rectangle.
         </p>
         <form action="find-by-bounding-box">
           <div class="table">
@@ -84,17 +84,17 @@
           <button type="submit" class="button">Find</button>
         </form>
         <p>Maybe you want to try out the predefined shape for
-          <a href="#" onclick="fillBoundingBox(52.499055862427, 13.4752368927, 52.493432998657, 13.484037399292)">Rummelsburg</a>
+          <a href="#" onclick="fillBoundingBox(52.49873648364294, 13.42940239358947, 52.56773557617564, 13.30153005428186)">Mitte</a>
         </p>
       </div>
     </div>
 
     <div class="horizontal-divider">&nbsp;</div>
     <div>
-      <h2>All districts</h2>
+      <h2>All boroughs</h2>
       <ul>
-      @districts.map { district =>
-        <li>@district</li>
+      @boroughs.map { borough =>
+        <li>@borough</li>
       }
       </ul>
     </div>

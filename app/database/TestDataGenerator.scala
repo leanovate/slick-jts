@@ -18,11 +18,11 @@ class TestDataGenerator {
 
       if (values.next() && values.getInt(1) == 0) {
         while (lines.hasNext) {
-          val (id, districtName, wkt) = (lines.next, lines.next, lines.next)
+          val (id, borough, wkt) = (lines.next, lines.next, lines.next)
 
-          val stmt = c.prepareStatement("INSERT INTO SHAPES (id, district_name, shape) VALUES (?, ?, ?);")
+          val stmt = c.prepareStatement("INSERT INTO SHAPES (id, borough_name, shape) VALUES (?, ?, ?);")
           stmt.setInt(1, id.toInt)
-          stmt.setString(2, districtName)
+          stmt.setString(2, borough)
           stmt.setWKT(3, wkt)
 
           stmt.execute()

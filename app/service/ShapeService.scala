@@ -27,7 +27,7 @@ class H2ShapeService extends ShapeService {
   def listAll(): Future[List[String]] =
     Future {
       DB.withConnection(c => {
-        val resultSet = c.prepareStatement("select district_name from shapes").executeQuery()
+        val resultSet = c.prepareStatement("select borough_name from shapes").executeQuery()
         val result = new RsIterator(resultSet).map(row => row.getString(1))
         result.toList
       })
@@ -38,7 +38,7 @@ class H2ShapeService extends ShapeService {
       DB.withConnection(c => {
         val wkt = s"POINT(${latLng.lat} ${latLng.lng})"
 
-        val sql = "select district_name from shapes where ST_Contains(shape, ?)"
+        val sql = "select borough_name from shapes where ST_Contains(shape, ?)"
         val stmt = c.prepareStatement(sql)
         stmt.setWKT(1, wkt)
         val resultSet = stmt.executeQuery()
@@ -51,7 +51,7 @@ class H2ShapeService extends ShapeService {
     DB.withConnection(c => {
       val wkt = s"POLYGON((${boundingBox.upperLeftLat} ${boundingBox.upperLeftLng}, ${boundingBox.lowerRightLat} ${boundingBox.upperLeftLng}, ${boundingBox.lowerRightLat} ${boundingBox.lowerRightLng}, ${boundingBox.upperLeftLat} ${boundingBox.lowerRightLng}, ${boundingBox.upperLeftLat} ${boundingBox.upperLeftLng}))"
 
-      val sql = "select district_name from shapes where ST_Contains(?, shape)"
+      val sql = "select borough_name from shapes where ST_Contains(?, shape)"
       val stmt = c.prepareStatement(sql)
       stmt.setWKT(1, wkt)
       val resultSet = stmt.executeQuery()
