@@ -1,4 +1,9 @@
 Slick-Spatial Demo
 ==================
 
-To see what's happening in here please have a look at tutorial/index.html
+This template demonstrates how Slick 2.x can be enhanced with features for spatial search.
+
+This document describes what is necessary to set up a database with spatial features enabled and use JTS on
+top of that for calculation. Both features incorporated into a play/scala application.
+
+Further details are found here tutorial/index.html.
