@@ -9,7 +9,9 @@ scalaVersion := "2.11.6"
 libraryDependencies ++= Seq(
   jdbc,
   "com.vividsolutions" % "jts" % "1.13",
-  "org.orbisgis" % "h2spatial-ext" % "1.2.2"
+  "org.orbisgis" % "h2spatial-ext" % "1.2.2",
+  "com.softwaremill.macwire" %% "macros" % "1.0.5",
+"com.softwaremill.macwire" %% "runtime" % "1.0.5"
 )
 
 // https://groups.google.com/forum/#!topic/play-framework/Efh1am71XtA
