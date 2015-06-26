@@ -38,11 +38,11 @@
           <div class="table">
             <div class="table-cell one-half">
               <label for="lat">Lat:</label>
-              <input id="lat" name="lat" class="required-floating-point-number"/>
+              <input id="lat" name="lat" class="required-coordinate"/>
             </div>
             <div class="table-cell one-half">
               <label for="lng">Lng:</label>
-              <input id="lng" name="lng" class="required-floating-point-number"/>
+              <input id="lng" name="lng" class="required-coordinate"/>
             </div>
           </div>
           <button type="submit" class="button">Find</button>
@@ -62,22 +62,22 @@
             <div class=" table-cell table">
               <div class="table-cell one-half">
                 <label for="upperLeftLat">Lat:</label>
-                <input id="upperLeftLat" class="required-floating-point-number" name="upperLeftLat"/>
+                <input id="upperLeftLat" class="required-coordinate" name="upperLeftLat"/>
               </div>
               <div class="table-cell one-half">
                 <label for="upperLeftLng">Lng:</label>
-                <input id="upperLeftLng" class="required-floating-point-number" name="upperLeftLng"/>
+                <input id="upperLeftLng" class="required-coordinate" name="upperLeftLng"/>
               </div>
             </div>
             <div class="table-cell">lower right corner</div>
             <div class=" table-cell table">
               <div class="table-cell one-half">
                 <label for="lowerRightLat">Lat:</label>
-                <input id="lowerRightLat" class="required-floating-point-number" name="lowerRightLat"/>
+                <input id="lowerRightLat" class="required-coordinate" name="lowerRightLat"/>
               </div>
               <div class="table-cell one-half">
                 <label for="lowerRightLng">Lng:</label>
-                <input id="lowerRightLng" class="required-floating-point-number" name="lowerRightLng"/>
+                <input id="lowerRightLng" class="required-coordinate" name="lowerRightLng"/>
               </div>
             </div>
           </div>
@@ -99,7 +99,7 @@
       </ul>
     </div>
     <script type="application/javascript">
-      var floatingPointNumberInputs = document.getElementsByClassName("required-floating-point-number");
+      var floatingPointNumberInputs = document.getElementsByClassName("required-coordinate");
       for (var i = 0; i < floatingPointNumberInputs.length; i++) {
         var input = floatingPointNumberInputs[i];
         input.setAttribute("oninvalid", "this.setCustomValidity('Enter a valid geo coordinate here')");
