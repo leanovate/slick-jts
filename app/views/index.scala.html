@@ -11,13 +11,19 @@
   <script>
         function fillLatLng(lat, lng) {
             document.getElementById("lat").value = lat;
+            document.getElementById("lat").setCustomValidity('');
             document.getElementById("lng").value = lng;
+            document.getElementById("lng").setCustomValidity('');
         }
         function fillBoundingBox(ulLat, ulLng, lrLat, lrLng) {
             document.getElementById("upperLeftLat").value = ulLat;
+            document.getElementById("upperLeftLat").setCustomValidity('');
             document.getElementById("upperLeftLng").value = ulLng;
+            document.getElementById("upperLeftLng").setCustomValidity('');
             document.getElementById("lowerRightLat").value = lrLat;
+            document.getElementById("lowerRightLat").setCustomValidity('');
             document.getElementById("lowerRightLng").value = lrLng;
+            document.getElementById("lowerRightLng").setCustomValidity('');
         }
     </script>
   <body>
